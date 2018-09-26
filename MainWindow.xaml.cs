@@ -32,6 +32,7 @@ namespace XliffTranslatorTool
                 OnStateChanged();
             }
         }
+        private ObservableCollection<TranslationUnit> FullTranslationList { get; set; }
 
         public MainWindow()
         {
@@ -127,7 +128,8 @@ namespace XliffTranslatorTool
                 ObservableCollection<TranslationUnit> translationUnits = XliffParser.GetTranslationUnitsFromFile(filePath);
                 if (AreTranslationUnitsValid(translationUnits))
                 {
-                    MainDataGrid.ItemsSource = translationUnits;
+                    FullTranslationList = translationUnits;
+                    MainDataGrid.ItemsSource = FullTranslationList;
                     SetState(State.FileOpened);
                 }
             }
@@ -190,6 +192,7 @@ namespace XliffTranslatorTool
                             }
                         }
                     }
+                    FullTranslationList = list;
                     MainDataGrid.Items.Refresh();
                 }
             }
@@ -288,6 +291,21 @@ namespace XliffTranslatorTool
                 Filter = Constants.FILE_DIALOG_FILTER,
                 Multiselect = false
             };
+        }
+
+        private void TextBox_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        {
+            FilterTranslations(SearchTextBox.Text);
+        }
+
+        private void FilterTranslations(string searchString)
+        { 
+            if (!String.IsNullOrWhiteSpace(searchString) && FullTranslationList != null && FullTranslationList.Count > 0)
+            {
+                var filteredContent = FullTranslationList.Where(tu => tu.Description.Contains(searchString) || tu.Identifier.Contains(searchString) || tu.Meaning.Contains(searchString) || tu.Source.Contains(searchString) || tu.Target.Contains(searchString));
+                MainDataGrid.ItemsSource = new ObservableCollection<TranslationUnit>(filteredContent);
+                MainDataGrid.Items.Refresh();
+            }
         }
     }
 }

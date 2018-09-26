@@ -8,8 +8,13 @@
         Loaded="Window_Loaded"
         Closing="Window_Closing">
 
-    <DockPanel>
-        <Menu x:Name="FileMenuItem" Height="25" VerticalAlignment="Top" VerticalContentAlignment="Center" DockPanel.Dock="Top">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Menu x:Name="FileMenuItem" Height="25" VerticalAlignment="Top" VerticalContentAlignment="Center" Grid.Row="0">
             <Menu.ItemsPanel>
                 <ItemsPanelTemplate>
                     <Grid/>
@@ -22,7 +27,10 @@
                 <MenuItem x:Name="SaveAsMenuOption" Header="Save as..." Click="SaveAsMenuOption_Click"/>
             </MenuItem>
         </Menu>
-        <DataGrid x:Name="MainDataGrid" VerticalAlignment="Top" AutoGenerateColumns="False">
+        <TextBox x:Name="SearchTextBox"
+                 TextChanged="TextBox_TextChanged"
+                 Grid.Row="1"/>
+        <DataGrid x:Name="MainDataGrid" VerticalAlignment="Top" AutoGenerateColumns="False" Grid.Row="2">
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding Identifier}" Header="Identifier" Width="Auto"/>
                 <DataGridTextColumn Binding="{Binding Meaning}" Header="Meaning" Width="Auto"/>
@@ -55,5 +63,5 @@
                 </DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>
-    </DockPanel>
+    </Grid>
 </Window>
