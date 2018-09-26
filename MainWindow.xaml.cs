@@ -8,6 +8,7 @@ using System.Windows;
 using System.Xml;
 using XliffTranslatorTool.Parser;
 using System.Linq;
+using System.Text;
 
 namespace XliffTranslatorTool
 {
@@ -273,7 +274,7 @@ namespace XliffTranslatorTool
             StringWriter stringWriter = new StringWriter();
             xmlDocument.Save(stringWriter);
             string indented = stringWriter.ToString().Replace("_AMP;_", "&").Replace("_LT;_", "<").Replace("_GT;_", ">");
-            using (StreamWriter streamWriter = new StreamWriter(filePath, false))
+            using (StreamWriter streamWriter = new StreamWriter(filePath, false, Encoding.UTF8))
             {
                 streamWriter.Write(indented);
             }
